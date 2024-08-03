@@ -1,0 +1,10 @@
+Name: Bob
+Grade: 2
+English: 0
+Math: 2
+Science: 1
+Available Slots:
+4/1 0
+4/2 1 3 
+4/3 0
+4/4 1 2 

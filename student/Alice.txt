@@ -1,0 +1,10 @@
+Name: Alice
+Grade: 3
+English: 1
+Math: 2
+Science: 0
+Available Slots:
+4/1 1 2
+4/2 0 
+4/3 2 3 
+4/4 0
