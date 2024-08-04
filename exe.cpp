@@ -32,9 +32,6 @@ void assignClasses(std::vector<Student>& students, std::vector<Teacher>& teacher
                         if (studentSubject != teacherSubject)continue;
                         for (auto& [studentDay, studentTimes] : student.availableSlots) {
                             for (auto& studentTime : studentTimes) {
-                                if (studentSubject=="Science"){
-                                    std::cout<< studentTime <<std::endl;
-                                }
                                 if (studentTime == 0)continue;
                                 for (auto& [teacherDay, teacherTimes] : teacher.availableSlots) {
                                     for (auto& teacherTime : teacherTimes) {
