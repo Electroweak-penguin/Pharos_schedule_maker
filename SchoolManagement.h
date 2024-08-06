@@ -10,10 +10,11 @@ class Student {
 public:
     std::string name;
     int grade;
+    int oneononeflag;
     std::map<std::string, int> subjectSlots; // 各科目のコマ数
     std::map<std::string, std::vector<int>> availableSlots; // 来塾可能な日付とコマ
 
-    Student(std::string name, int grade, std::map<std::string, int> subjectSlots, std::map<std::string, std::vector<int>> availableSlots);
+    Student(std::string name, int grade, int oneononeflag, std::map<std::string, int> subjectSlots, std::map<std::string, std::vector<int>> availableSlots);
     Student() {}
 };
 
@@ -23,8 +24,9 @@ public:
     std::string name;
     std::vector<std::string> subjects; // 担当科目
     std::map<std::string, std::vector<int>> availableSlots; // 来塾可能な日付とコマ
+    std::map<std::string, std::map<int, std::map<int, int>>> classCount;
 
-    Teacher(std::string name, std::vector<std::string> subjects, std::map<std::string, std::vector<int>> availableSlots);
+    Teacher(std::string name, std::vector<std::string> subjects, std::map<std::string, std::vector<int>> availableSlots, std::map<std::string, std::map<int, std::map<int, int>>> classCount);
     Teacher() {}
 };
 

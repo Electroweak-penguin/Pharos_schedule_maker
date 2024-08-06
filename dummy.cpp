@@ -4,13 +4,14 @@
 #include <vector>
 #include <string>
 
-void createStudentFile(const std::string& filename, const std::string& name, int grade, 
+void createStudentFile(const std::string& filename, const std::string& name, int grade, int oneononeflag, 
                        const std::map<std::string, int>& subjectSlots, 
                        const std::map<std::string, std::vector<int>>& availableSlots) {
     std::ofstream file(filename);
 
     file << "Name: " << name << "\n";
     file << "Grade: " << grade << "\n";
+    file << "OneOnOneflag: " << oneononeflag << "\n";
     file << "Subjects:\n";
     for (const auto& [subject, slots] : subjectSlots) {
         file << subject << ": " << slots << "\n";
@@ -53,19 +54,22 @@ void createTeacherFile(const std::string& filename, const std::string& name,
 
 int dummy() {
     // 生徒データ
-    createStudentFile("student/Alice.txt", "Alice", 3, 
+    createStudentFile("student/Alice.txt", "Alice", 3, 0, 
                       {{"Math", 2}, {"English", 1}}, 
                       {{"4/1", {1, 2}}, {"4/2", {0}}, {"4/3", {2, 3}}, {"4/4", {0}}});
-    createStudentFile("student/Bob.txt", "Bob", 2, 
+    createStudentFile("student/Bob.txt", "Bob", 2, 1, 
                       {{"Science", 1}, {"Math", 2}}, 
                       {{"4/1", {0}}, {"4/2", {1, 3}}, {"4/3", {0}}, {"4/4", {1, 2}}});
+    createStudentFile("student/Charlie.txt", "Charlie", 6, 0, 
+                      {{"Science", 1}}, 
+                      {{"4/1", {0}}, {"4/2", {1}}, {"4/3", {2, 3}}, {"4/4", {1, 2}}});
 
     // 講師データ
     createTeacherFile("teacher/Mr_Smith.txt", "Mr. Smith", 
                       {"Math", "Science"}, 
                       {{"4/1", {1, 2}}, {"4/2", {1, 2, 3}}, {"4/3", {0}}, {"4/4", {0}}});
     createTeacherFile("teacher/Ms_Johnson.txt", "Ms. Johnson", 
-                      {"English", "Math"}, 
+                      {"English", "Math", "Science"}, 
                       {{"4/1", {0}}, {"4/2", {0}},{"4/3", {2, 3}}, {"4/4", {1, 2}}});
 
     return 0;

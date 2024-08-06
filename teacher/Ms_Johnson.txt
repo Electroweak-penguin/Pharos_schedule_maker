@@ -2,6 +2,7 @@ Name: Ms. Johnson
 Subjects:
 English
 Math
+Science
 
 Available Slots:
 4/1 0 

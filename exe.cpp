@@ -8,12 +8,12 @@
 namespace fs = std::filesystem;
 
 // Studentクラスのコンストラクタ
-Student::Student(std::string name, int grade, std::map<std::string, int> subjectSlots, std::map<std::string, std::vector<int>> availableSlots)
-    : name(name), grade(grade), subjectSlots(subjectSlots), availableSlots(availableSlots) {}
+Student::Student(std::string name, int grade, int oneononeflag, std::map<std::string, int> subjectSlots, std::map<std::string, std::vector<int>> availableSlots)
+    : name(name), grade(grade), oneononeflag(oneononeflag), subjectSlots(subjectSlots), availableSlots(availableSlots) {}
 
 // Teacherクラスのコンストラクタ
-Teacher::Teacher(std::string name, std::vector<std::string> subjects, std::map<std::string, std::vector<int>> availableSlots)
-    : name(name), subjects(subjects), availableSlots(availableSlots) {}
+Teacher::Teacher(std::string name, std::vector<std::string> subjects, std::map<std::string, std::vector<int>> availableSlots, std::map<std::string, std::map<int, std::map<int, int>>> classCount)
+    : name(name), subjects(subjects), availableSlots(availableSlots), classCount(classCount) {}
 
 // 授業割り当て関数の実装
 void assignClasses(std::vector<Student>& students, std::vector<Teacher>& teachers) {
@@ -25,31 +25,35 @@ void assignClasses(std::vector<Student>& students, std::vector<Teacher>& teacher
 
     for (auto& student : students) {
         for (const auto& [studentSubject, slots] : student.subjectSlots) {
-            for (int slot = 0; slot < slots; slot++){
-                bool flag =false;
+            for (int slot = 0; slot < slots; slot++) {
+                bool flag = false;
                 for (auto& teacher : teachers) {
                     for (const auto& teacherSubject : teacher.subjects) {
-                        if (studentSubject != teacherSubject)continue;
+                        if (studentSubject != teacherSubject) continue;
                         for (auto& [studentDay, studentTimes] : student.availableSlots) {
                             for (auto& studentTime : studentTimes) {
-                                if (studentTime == 0)continue;
+                                if (studentTime == 0) continue;
                                 for (auto& [teacherDay, teacherTimes] : teacher.availableSlots) {
                                     for (auto& teacherTime : teacherTimes) {
-                                        if (teacherTime == 0)continue;
-                                        if (teacherDay == studentDay && studentTime == teacherTime){
+                                        if (teacherTime == 0) continue;
+                                        if (teacherDay == studentDay && studentTime == teacherTime) {
                                             flag = true;
                                             outFile << "Student " << student.name << " (Grade " << student.grade << ") "
                                                     << "has been assigned to Teacher " << teacher.name << " for " << teacherSubject
                                                     << " on " << teacherDay << " at slot " << teacherTime << std::endl;
-                                            auto tit = std::find(teacherTimes.begin(), teacherTimes.end(), teacherTime);
-                                            if (tit != teacherTimes.end()) {
-                                                teacherTimes.erase(tit);
+
+                                            if (teacher.classCount[teacherDay][teacherTime][student.oneononeflag] == 1 || (student.oneononeflag == 1)) {
+                                                auto tit = std::find(teacherTimes.begin(), teacherTimes.end(), teacherTime);
+                                                if (tit != teacherTimes.end()) {
+                                                    teacherTimes.erase(tit);
+                                                }
                                             }
                                             auto sit = std::find(studentTimes.begin(), studentTimes.end(), studentTime);
                                             if (sit != studentTimes.end()) {
                                                 studentTimes.erase(sit);
                                             }
-                                            
+
+                                            teacher.classCount[teacherDay][teacherTime][student.oneononeflag]++;
                                         }
                                         if (flag) break;
                                     }
@@ -79,7 +83,7 @@ std::vector<Student> loadStudentsFromFiles(const std::string& directory) {
             std::ifstream file(entry.path());
             if (file.is_open()) {
                 std::string name, line;
-                int grade;
+                int grade, oneononeflag;
                 int english, math, science;
                 std::map<std::string, int> subjectSlots;
                 std::map<std::string, std::vector<int>> availableSlots;
@@ -89,6 +93,8 @@ std::vector<Student> loadStudentsFromFiles(const std::string& directory) {
                         name = line.substr(6); // "Name: "をスキップ
                     } else if (line.find("Grade:") == 0) {
                         grade = std::stoi(line.substr(7)); // "Grade: "をスキップ
+                    } else if (line.find("OneOnOneflag:") == 0) {
+                        oneononeflag = std::stoi(line.substr(14));
                     } else if (line.find("English:") == 0) {
                         english = std::stoi(line.substr(9));
                         subjectSlots["English"] = english;
@@ -112,7 +118,7 @@ std::vector<Student> loadStudentsFromFiles(const std::string& directory) {
                         }
                     }
                 }
-                students.emplace_back(name, grade, subjectSlots, availableSlots);
+                students.emplace_back(name, grade, oneononeflag, subjectSlots, availableSlots);
                 file.close();
             }
         }
@@ -132,6 +138,7 @@ std::vector<Teacher> loadTeachersFromFiles(const std::string& directory) {
                 std::string name, line;
                 std::vector<std::string> subjects;
                 std::map<std::string, std::vector<int>> availableSlots;
+                std::map<std::string, std::map<int, std::map<int, int>>> classCount;
 
                 while (std::getline(file, line)) {
                     if (line.find("Name: ") == 0) {
@@ -155,7 +162,7 @@ std::vector<Teacher> loadTeachersFromFiles(const std::string& directory) {
                     }
                 }
 
-                teachers.emplace_back(name, subjects, availableSlots);
+                teachers.emplace_back(name, subjects, availableSlots, classCount);
                 file.close();
             }
         }
