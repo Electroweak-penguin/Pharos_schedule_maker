@@ -8,12 +8,20 @@
 namespace fs = std::filesystem;
 
 // Studentクラスのコンストラクタ
-Student::Student(std::string name, int grade, int oneononeflag, std::map<std::string, int> subjectSlots, std::map<std::string, std::vector<int>> availableSlots)
+Student::Student(std::string name, int grade, int oneononeflag, std::map<std::string, std::pair<int, std::pair<std::vector<std::string>, std::vector<int>>>> subjectSlots, std::map<std::string, std::vector<int>> availableSlots)
     : name(name), grade(grade), oneononeflag(oneononeflag), subjectSlots(subjectSlots), availableSlots(availableSlots) {}
 
 // Teacherクラスのコンストラクタ
 Teacher::Teacher(std::string name, std::vector<std::string> subjects, std::map<std::string, std::vector<int>> availableSlots, std::map<std::string, std::map<int, std::map<int, int>>> classCount)
     : name(name), subjects(subjects), availableSlots(availableSlots), classCount(classCount) {}
+
+// Teacher並び替えの関数
+void sortTeachers(std::vector<Teacher>& teachers, std::vector<std::string> strvec) {
+    std::stable_partition(teachers.begin(), teachers.end(), 
+        [&strvec](const Teacher& teacher) {
+            return std::find(strvec.begin(), strvec.end(), teacher.name) != strvec.end();
+        });
+}
 
 // 授業割り当て関数の実装
 void assignClasses(std::vector<Student>& students, std::vector<Teacher>& teachers) {
@@ -24,10 +32,21 @@ void assignClasses(std::vector<Student>& students, std::vector<Teacher>& teacher
     }
 
     for (auto& student : students) {
-        for (const auto& [studentSubject, slots] : student.subjectSlots) {
-            for (int slot = 0; slot < slots; slot++) {
+        for (const auto& [studentSubject, subjectData] : student.subjectSlots) {
+            auto& tsubslots = subjectData.second;
+            auto& strvec = tsubslots.first;
+            auto& numvec = tsubslots.second;
+            sortTeachers(teachers, strvec);
+            for (int slot = 0; slot < subjectData.first; slot++) {
                 bool flag = false;
-                for (auto& teacher : teachers) {
+                int tempcount = 0;
+                for (int i = 0; i < teachers.size(); ++i) {
+                    auto& teacher = teachers[i];
+                    if (numvec.size() > i && tempcount > numvec[i]){
+                        tempcount = 0;
+                        continue;
+                    }
+                    tempcount++;
                     for (const auto& teacherSubject : teacher.subjects) {
                         if (studentSubject != teacherSubject) continue;
                         for (auto& [studentDay, studentTimes] : student.availableSlots) {
@@ -85,7 +104,8 @@ std::vector<Student> loadStudentsFromFiles(const std::string& directory) {
                 std::string name, line;
                 int grade, oneononeflag;
                 int english, math, science;
-                std::map<std::string, int> subjectSlots;
+                int subslotnum;
+                std::map<std::string, std::pair<int, std::pair<std::vector<std::string>, std::vector<int>>>> subjectSlots;
                 std::map<std::string, std::vector<int>> availableSlots;
 
                 while (std::getline(file, line)) {
@@ -95,15 +115,6 @@ std::vector<Student> loadStudentsFromFiles(const std::string& directory) {
                         grade = std::stoi(line.substr(7)); // "Grade: "をスキップ
                     } else if (line.find("OneOnOneflag:") == 0) {
                         oneononeflag = std::stoi(line.substr(14));
-                    } else if (line.find("English:") == 0) {
-                        english = std::stoi(line.substr(9));
-                        subjectSlots["English"] = english;
-                    } else if (line.find("Math:") == 0) {
-                        math = std::stoi(line.substr(6));
-                        subjectSlots["Math"] = math;
-                    } else if (line.find("Science:") == 0) {
-                        science = std::stoi(line.substr(9));
-                        subjectSlots["Science"] = science;
                     } else if (line.find("Available Slots:") == 0) {
                         while (std::getline(file, line) && !line.empty()) {
                             std::istringstream availStream(line);
@@ -116,6 +127,23 @@ std::vector<Student> loadStudentsFromFiles(const std::string& directory) {
                             }
                             availableSlots[date] = times;
                         }
+                    }
+                    size_t colonPos = line.find("::");
+                    if (colonPos != std::string::npos) {
+                        std::string subject = line.substr(0, colonPos);  // 科目名を抽出
+                        int count = std::stoi(line.substr(colonPos + 2));  // 数値を抽出
+                        std::vector<std::string> strvec;
+                        std::vector<int> numvec;
+                        while (std::getline(file, line) && !line.empty()) {
+                            std::istringstream iss(line);
+                            std::string str;
+                            int num;
+                            iss >> str >> num;  // 空白で区切られた部分を分割
+                            strvec.push_back(str);
+                            numvec.push_back(num);
+                        }
+                        std::pair<std::vector<std::string>, std::vector<int>> tsubslots = {strvec, numvec};
+                        subjectSlots[subject] = {count, tsubslots};  // 科目名に対応するデータを格納
                     }
                 }
                 students.emplace_back(name, grade, oneononeflag, subjectSlots, availableSlots);

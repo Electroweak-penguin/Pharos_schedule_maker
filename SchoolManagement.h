@@ -11,10 +11,10 @@ public:
     std::string name;
     int grade;
     int oneononeflag;
-    std::map<std::string, int> subjectSlots; // 各科目のコマ数
+    std::map<std::string, std::pair<int, std::pair<std::vector<std::string>, std::vector<int>>>> subjectSlots; // 各科目のコマ数
     std::map<std::string, std::vector<int>> availableSlots; // 来塾可能な日付とコマ
 
-    Student(std::string name, int grade, int oneononeflag, std::map<std::string, int> subjectSlots, std::map<std::string, std::vector<int>> availableSlots);
+    Student(std::string name, int grade, int oneononeflag, std::map<std::string, std::pair<int, std::pair<std::vector<std::string>, std::vector<int>>>> subjectSlots, std::map<std::string, std::vector<int>> availableSlots);
     Student() {}
 };
 

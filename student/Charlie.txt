@@ -2,7 +2,8 @@ Name: Charlie
 Grade: 6
 OneOnOneflag: 0
 Subjects:
-Science: 1
+Science:: 1
+
 
 Available Slots:
 4/1 0 

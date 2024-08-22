@@ -5,7 +5,7 @@
 #include <string>
 
 void createStudentFile(const std::string& filename, const std::string& name, int grade, int oneononeflag, 
-                       const std::map<std::string, int>& subjectSlots, 
+                       const std::map<std::string, std::pair<int, std::pair<std::vector<std::string>, std::vector<int>>>>& subjectSlots, 
                        const std::map<std::string, std::vector<int>>& availableSlots) {
     std::ofstream file(filename);
 
@@ -13,8 +13,19 @@ void createStudentFile(const std::string& filename, const std::string& name, int
     file << "Grade: " << grade << "\n";
     file << "OneOnOneflag: " << oneononeflag << "\n";
     file << "Subjects:\n";
-    for (const auto& [subject, slots] : subjectSlots) {
-        file << subject << ": " << slots << "\n";
+    for (const auto& [subject, subjectData] : subjectSlots) {
+        file << subject << ":: " << subjectData.first << "\n";
+        const auto& tsubjects = subjectData.second.first;  // tsubjectのベクター
+        const auto& tslot = subjectData.second.second;  // tslotのベクター
+
+        if (tsubjects.empty() || tslot.empty()) {
+            file << "\n";
+        } else {
+            for (size_t i = 0; i < tsubjects.size() && i < tslot.size(); ++i) {
+                file << tsubjects[i] << " " << tslot[i] << "\n";
+            }
+            file << "\n";
+        }
     }
     file << "\n";
     file << "Available Slots:\n";
@@ -25,7 +36,6 @@ void createStudentFile(const std::string& filename, const std::string& name, int
         }
         file << "\n";
     }
-
     file.close();
 }
 
@@ -55,13 +65,13 @@ void createTeacherFile(const std::string& filename, const std::string& name,
 int dummy() {
     // 生徒データ
     createStudentFile("student/Alice.txt", "Alice", 3, 0, 
-                      {{"Math", 2}, {"English", 1}}, 
+                      {{"Math", {2, {{"Mr_Smith", "Ms_Johnson"}, {1, 1}}}}, {"English", {1, {{}, {}}}}}, 
                       {{"4/1", {1, 2}}, {"4/2", {0}}, {"4/3", {2, 3}}, {"4/4", {0}}});
     createStudentFile("student/Bob.txt", "Bob", 2, 1, 
-                      {{"Science", 1}, {"Math", 2}}, 
+                      {{"Science", {1, {{}, {}}}}, {"Math", {2, {{}, {}}}}}, 
                       {{"4/1", {0}}, {"4/2", {1, 3}}, {"4/3", {0}}, {"4/4", {1, 2}}});
     createStudentFile("student/Charlie.txt", "Charlie", 6, 0, 
-                      {{"Science", 1}}, 
+                      {{"Science", {1, {{}, {}}}}}, 
                       {{"4/1", {0}}, {"4/2", {1}}, {"4/3", {2, 3}}, {"4/4", {1, 2}}});
 
     // 講師データ

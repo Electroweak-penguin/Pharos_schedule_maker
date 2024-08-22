@@ -2,8 +2,12 @@ Name: Alice
 Grade: 3
 OneOnOneflag: 0
 Subjects:
-English: 1
-Math: 2
+English:: 1
+
+Math:: 2
+Mr_Smith 1
+Ms_Johnson 1
+
 
 Available Slots:
 4/1 1 2 
