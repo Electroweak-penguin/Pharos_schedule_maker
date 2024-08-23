@@ -4,7 +4,7 @@
 #include <sstream>
 #include <algorithm>
 #include <filesystem>
- #include <vector>
+#include <vector>
 //  植田裕也です
 namespace fs = std::filesystem;
 
