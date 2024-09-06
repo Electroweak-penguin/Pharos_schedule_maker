@@ -62,7 +62,7 @@ void createTeacherFile(const std::string& filename, const std::string& name,
     file.close();
 }
 
-int dummy() {
+int main() {
     // 生徒データ
     createStudentFile("student/Alice.txt", "Alice", 3, 0, 
                       {{"Math", {2, {{"Mr_Smith", "Ms_Johnson"}, {1, 1}}}}, {"English", {1, {{}, {}}}}}, 

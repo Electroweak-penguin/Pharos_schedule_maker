@@ -200,7 +200,7 @@ std::vector<Teacher> loadTeachersFromFiles(const std::string& directory) {
     return teachers;
 }
 
-int exe() {
+int main() {
     // ファイルからデータを読み込む
     std::vector<Student> students = loadStudentsFromFiles("student");
     std::vector<Teacher> teachers = loadTeachersFromFiles("teacher");
