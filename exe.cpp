@@ -6,6 +6,7 @@
 #include <filesystem>
 #include <vector>
 //  植田裕也です
+//  腕野です
 namespace fs = std::filesystem;
 
 // Studentクラスのコンストラクタ
