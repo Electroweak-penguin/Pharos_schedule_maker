@@ -95,27 +95,6 @@ void assignClasses(std::vector<Student>& students, std::vector<Teacher>& teacher
     outFile.close();
 }
 
-// config.txtを読み込み、対象の生徒と教師の名前を取得
-void loadConfig(const std::string& configPath, std::vector<std::string>& studentNames, std::vector<std::string>& teacherNames) {
-    std::ifstream configFile(configPath);
-    if (!configFile.is_open()) {
-        throw std::runtime_error("Failed to open config.txt");
-    }
-
-    std::string line;
-    while (std::getline(configFile, line)) {
-        if (line == "Student:") {
-            while (std::getline(configFile, line) && !line.empty()) {
-                studentNames.push_back(line);
-            }
-        } else if (line == "Teacher:") {
-            while (std::getline(configFile, line) && !line.empty()) {
-                teacherNames.push_back(line);
-            }
-        }
-    }
-}
-
 // テキストファイルから生徒のデータを読み込む
 std::vector<Student> loadStudentsFromFiles(const std::string& directory, const std::vector<std::string>& targetStudents, bool loadAll) {
     std::vector<Student> students;
@@ -277,7 +256,7 @@ std::vector<Teacher> loadTeachersFromFiles(const std::string& directory, const s
 }
 
 // 実行関数
-int exe() {
+int main() {
     // 全てのデータを読み込むフラグ
     bool loadAll = true; // 全てのデータを読み込む場合はtrueに設定
 

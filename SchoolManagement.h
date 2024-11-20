@@ -140,3 +140,24 @@ void ClassCountUpdate(bool isStudent, const std::string& name, const std::string
     outFile << updatedContent.str();
     outFile.close();
 }
+
+// config.txtを読み込み、対象の生徒と教師の名前を取得
+void loadConfig(const std::string& configPath, std::vector<std::string>& studentNames, std::vector<std::string>& teacherNames) {
+    std::ifstream configFile(configPath);
+    if (!configFile.is_open()) {
+        throw std::runtime_error("Failed to open config.txt");
+    }
+
+    std::string line;
+    while (std::getline(configFile, line)) {
+        if (line == "Student:") {
+            while (std::getline(configFile, line) && !line.empty()) {
+                studentNames.push_back(line);
+            }
+        } else if (line == "Teacher:") {
+            while (std::getline(configFile, line) && !line.empty()) {
+                teacherNames.push_back(line);
+            }
+        }
+    }
+}

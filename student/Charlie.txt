@@ -16,5 +16,5 @@ Available Slots:
 class Count:
 4/1 0
 4/2 1
-4/3 2 1
+4/3 2 2
 4/4 1 1
