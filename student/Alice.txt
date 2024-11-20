@@ -1,6 +1,8 @@
 Name: Alice
 Grade: 3
+isMale: 0
 OneOnOneflag: 0
+genderflag: 0
 Subjects:
 English:: 1
 
@@ -10,7 +12,13 @@ Ms_Johnson 1
 
 
 Available Slots:
-4/1 1 2 
+4/1 1 2
 4/2 0 
-4/3 2 3 
+4/3 2 3
 4/4 0 
+
+class Count:
+4/1 2 1
+4/2 0
+4/3 2 2
+4/4 0

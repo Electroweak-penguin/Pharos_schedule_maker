@@ -1,7 +1,7 @@
-Student Alice (Grade 3) has been assigned to Teacher Ms. Johnson for English on 4/3 at slot 2
-Student Alice (Grade 3) has been assigned to Teacher Ms. Johnson for Math on 4/3 at slot 3
-Student Alice (Grade 3) has been assigned to Teacher Mr. Smith for Math on 4/1 at slot 1
-Student Bob (Grade 2) has been assigned to Teacher Ms. Johnson for Math on 4/4 at slot 1
-Student Bob (Grade 2) has been assigned to Teacher Ms. Johnson for Math on 4/4 at slot 2
-Student Bob (Grade 2) has been assigned to Teacher Mr. Smith for Science on 4/2 at slot 1
-Student Charlie (Grade 6) has been assigned to Teacher Ms. Johnson for Science on 4/3 at slot 2
+Student Alice (Grade 3) has been assigned to Teacher Ms_Johnson for English on 4/3 at slot 2
+Student Alice (Grade 3) has been assigned to Teacher Ms_Johnson for Math on 4/3 at slot 3
+Student Alice (Grade 3) has been assigned to Teacher Mr_Smith for Math on 4/1 at slot 1
+Student Bob (Grade 2) has been assigned to Teacher Ms_Johnson for Math on 4/4 at slot 1
+Student Bob (Grade 2) has been assigned to Teacher Ms_Johnson for Math on 4/4 at slot 2
+Student Bob (Grade 2) has been assigned to Teacher Mr_Smith for Science on 4/2 at slot 1
+Student Charlie (Grade 6) has been assigned to Teacher Ms_Johnson for Science on 4/3 at slot 2

@@ -1,10 +1,17 @@
-Name: Mr. Smith
+Name: Mr_Smith
+isMale: 1
 Subjects:
 Math
 Science
 
 Available Slots:
-4/1 1 2 
-4/2 1 2 3 
+4/1 1 2
+4/2 1 2 3
 4/3 0 
 4/4 0 
+
+class Count:
+4/1 2 1
+4/2 2 1 1
+4/3 0
+4/4 0
