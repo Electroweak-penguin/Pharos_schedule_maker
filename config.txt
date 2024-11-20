@@ -3,3 +3,4 @@ Alice
 
 Teacher:
 Ms_Johnson
+Mr_Smith

@@ -19,7 +19,7 @@ Teacher::Teacher(std::string name, int isMale, std::vector<std::string> subjects
 
 // 授業割り当て関数の実装
 void assignClasses(std::vector<Student>& students, std::vector<Teacher>& teachers) {
-    std::ofstream outFile("schedule.txt");
+    std::ofstream outFile("schedule.txt", std::ios::app); // ファイルを追記モードで開く
     if (!outFile.is_open()) {
         std::cerr << "Unable to open output file!" << std::endl;
         return;
@@ -160,12 +160,25 @@ std::vector<Student> loadStudentsFromFiles(const std::string& directory, const s
                                 times.push_back(time);
                             }
                             availableSlots[date] = times;
-                            for (int i = 0; i < times.size(); i++) {
-                                if (times[i] == 0) classCount[date][i] = 0;
-                                else classCount[date][times[i]] = 1;
+                        }
+                    }  else if (line.find("class Count:") == 0) {
+                        while (std::getline(file, line) && !line.empty()) {
+                            std::istringstream countStream(line);
+                            std::string date;
+                            countStream >> date; // 日付を取得
+
+                            // `Available Slots:`のスロットと対応するために取得
+                            const auto& availableSlotsForDay = availableSlots[date];
+                            int slotIndex = 0;
+
+                            for (const auto& slot : availableSlotsForDay) {
+                                int count;
+                                countStream >> count; // `class Count:`の値を取得
+                                classCount[date][slot] = count; // スロット値をキーにして格納
                             }
                         }
                     }
+
                     size_t colonPos = line.find("::");
                     if (colonPos != std::string::npos) {
                         std::string subject = line.substr(0, colonPos);  // 科目名を抽出
@@ -234,12 +247,25 @@ std::vector<Teacher> loadTeachersFromFiles(const std::string& directory, const s
                                 times.push_back(time);
                             }
                             availableSlots[date] = times;
-                            for (int i = 0; i < times.size(); i++) {
-                                if (times[i] == 0) classCount[date][i] = 0;
-                                else classCount[date][times[i]] = 1;
+                        }
+                    }  else if (line.find("class Count:") == 0) {
+                        while (std::getline(file, line) && !line.empty()) {
+                            std::istringstream countStream(line);
+                            std::string date;
+                            countStream >> date; // 日付を取得
+
+                            // `Available Slots:`のスロットと対応するために取得
+                            const auto& availableSlotsForDay = availableSlots[date];
+                            int slotIndex = 0;
+
+                            for (const auto& slot : availableSlotsForDay) {
+                                int count;
+                                countStream >> count; // `class Count:`の値を取得
+                                classCount[date][slot] = count; // スロット値をキーにして格納
                             }
                         }
                     }
+
                 }
                 teachers.emplace_back(name, isMale, subjects, availableSlots, classCount);
                 file.close();
