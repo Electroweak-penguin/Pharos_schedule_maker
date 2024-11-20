@@ -256,7 +256,7 @@ std::vector<Teacher> loadTeachersFromFiles(const std::string& directory, const s
 }
 
 // 実行関数
-int main() {
+int exe() {
     // 全てのデータを読み込むフラグ
     bool loadAll = true; // 全てのデータを読み込む場合はtrueに設定
 

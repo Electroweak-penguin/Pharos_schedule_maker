@@ -123,7 +123,12 @@ def process_pdf(file_path, output_dir, image_output_dir):
             output_data.append(f"5/{x+6} " + " ".join(map(str, class_count)))
 
     with open(output_file, "w") as file:
-        file.write(f"Name: {student_name}\n\n")
+        file.write(f"Name: {student_name}\n")
+        file.write(f"Grade: \n")
+        file.write(f"isMale: 0\n")
+        file.write(f"OneOnOneflag: 0\n")
+        file.write(f"genderflag: 0\n")
+        file.write(f"Subjects:\n\n")
         file.write("Available Slots:\n")
         file.write("\n".join(output_data))
         file.write("\n\n")

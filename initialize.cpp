@@ -188,7 +188,7 @@ void initialize(const std::string& configPath, const std::string& schedulePath, 
 }
 
 // メイン関数
-int main() {
+int initialize() {
 
     bool initializeAll = true; // 全てのファイルを初期化する場合はtrueにする
     const std::string configPath = "config.txt";
